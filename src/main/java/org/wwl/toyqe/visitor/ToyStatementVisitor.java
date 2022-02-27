@@ -1,6 +1,12 @@
 package org.wwl.toyqe.visitor;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.StatementVisitor;
+import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.drop.Drop;
@@ -13,9 +19,11 @@ import net.sf.jsqlparser.statement.update.Update;
 
 public class ToyStatementVisitor implements StatementVisitor {
 	private SelectVisitor selectVisitor;
+	private Map<String, List<ColumnDefinition>> schemas;
 	
 	public ToyStatementVisitor() {
 		selectVisitor = new ToySelectVisitor();
+		schemas = new HashMap<String, List<ColumnDefinition>>();
 	}
 
 	public void visit(Select select) {
@@ -55,7 +63,18 @@ public class ToyStatementVisitor implements StatementVisitor {
 
 	public void visit(CreateTable createTable) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException(createTable.toString());
-	}
+		Table table = createTable.getTable();
+		String tableName = table.getName();
+		List<ColumnDefinition> colDefs = createTable.getColumnDefinitions();
+		this.schemas.put(tableName, colDefs);
 
+		System.out.println("creating table " + tableName + ", schema name: " + table.getSchemaName());
+		System.out.println("column defs:");
+		for (ColumnDefinition cdef : colDefs) {
+			cdef.getColDataType();
+			System.out.println("column name: " + cdef.getColumnName() + 
+					", data type: " + cdef.getColDataType() + 
+					", spec string: " + cdef.getColumnSpecStrings());
+		}
+	}
 }
