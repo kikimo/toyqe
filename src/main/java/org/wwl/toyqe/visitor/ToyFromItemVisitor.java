@@ -23,7 +23,7 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		System.out.println("table name: " + tableName);
 		Path dataFile = Paths.get("data", tableName + ".dat");
 		if (!Files.exists(dataFile)) {
-			System.out.println("table " + tableName + " not exist.");
+			System.out.println("table " + tableName + " not found.");
 			return;
 		}
 
@@ -36,7 +36,13 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 			Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(reader);
 			
 			for (final CSVRecord record : records) {
-				System.out.println(record);
+				for (int i = 0; i < record.size(); i++) {
+					System.out.print(record.get(i));
+					if (i < record.size() - 1) {
+						System.out.print(", ");
+					}
+				}
+				System.out.println();
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

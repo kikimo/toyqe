@@ -18,7 +18,6 @@ public class ToyQueryEngine {
 		ToyStatementVisitor statementVisitor = new ToyStatementVisitor();
 		while ((statement = parser.Statement()) != null) {
 			statement.accept(statementVisitor);
-//			System.out.println(statement);
 			System.out.print("$> ");
 		}
 	}

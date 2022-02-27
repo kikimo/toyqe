@@ -1,7 +1,5 @@
 package org.wwl.toyqe.visitor;
 
-import org.wwl.toyqe.visitor.ToyFromItemVisitor;
-
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectVisitor;
