@@ -13,8 +13,10 @@ public class ToyQueryEngine {
 		
 		System.out.print("$> ");
 		Statement statement;
+		ToyStatementVisitor statementVisitor = new ToyStatementVisitor();
 		while ((statement = parser.Statement()) != null) {
-			System.out.println(statement);
+			statement.accept(statementVisitor);
+//			System.out.println(statement);
 			System.out.print("$> ");
 		}
 	}
