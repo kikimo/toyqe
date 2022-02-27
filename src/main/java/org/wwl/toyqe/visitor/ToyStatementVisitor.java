@@ -1,4 +1,4 @@
-package org.wwl.toyqe;
+package org.wwl.toyqe.visitor;
 
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
@@ -7,13 +7,19 @@ import net.sf.jsqlparser.statement.drop.Drop;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.replace.Replace;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.statement.select.SelectVisitor;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
 public class ToyStatementVisitor implements StatementVisitor {
+	private SelectVisitor selectVisitor;
+	
+	public ToyStatementVisitor() {
+		selectVisitor = new ToySelectVisitor();
+	}
 
 	public void visit(Select select) {
-		System.out.println(select);
+		select.getSelectBody().accept(selectVisitor);
 	}
 
 	public void visit(Delete delete) {
