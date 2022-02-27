@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.wwl.toyqe.MetaStore;
+
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
@@ -62,11 +64,10 @@ public class ToyStatementVisitor implements StatementVisitor {
 	}
 
 	public void visit(CreateTable createTable) {
-		// TODO Auto-generated method stub
 		Table table = createTable.getTable();
 		String tableName = table.getName();
 		List<ColumnDefinition> colDefs = createTable.getColumnDefinitions();
-		this.schemas.put(tableName, colDefs);
+		MetaStore.createTable(tableName, colDefs);
 
 		System.out.println("creating table " + tableName + ", schema name: " + table.getSchemaName());
 		System.out.println("column defs:");

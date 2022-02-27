@@ -8,7 +8,7 @@ import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.parser.ParseException;
 import net.sf.jsqlparser.statement.Statement;
 
-public class ToyQueryEngine {
+public class QueryEngine {
 	public static void main(String []args) throws ParseException {
 		InputStream input = System.in;
 		CCJSqlParser parser = new CCJSqlParser(input);

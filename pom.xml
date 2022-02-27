@@ -55,7 +55,7 @@
       				<archive>
       				<manifest>
       					<mainClass>
-      						org.wwl.toyqe.ToyQueryEngine
+      						org.wwl.toyqe.QueryEngine
       					</mainClass>
       				</manifest>
       				</archive>
