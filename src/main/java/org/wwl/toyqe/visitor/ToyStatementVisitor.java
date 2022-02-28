@@ -1,8 +1,6 @@
 package org.wwl.toyqe.visitor;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.wwl.toyqe.MetaStore;
 
@@ -21,11 +19,9 @@ import net.sf.jsqlparser.statement.update.Update;
 
 public class ToyStatementVisitor implements StatementVisitor {
 	private SelectVisitor selectVisitor;
-	private Map<String, List<ColumnDefinition>> schemas;
 	
 	public ToyStatementVisitor() {
 		selectVisitor = new ToySelectVisitor();
-		schemas = new HashMap<String, List<ColumnDefinition>>();
 	}
 
 	public void visit(Select select) {
