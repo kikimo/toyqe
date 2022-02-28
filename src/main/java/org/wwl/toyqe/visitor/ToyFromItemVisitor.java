@@ -1,5 +1,6 @@
 package org.wwl.toyqe.visitor;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -17,6 +19,12 @@ import net.sf.jsqlparser.statement.select.SubJoin;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
 public class ToyFromItemVisitor implements FromItemVisitor {
+
+	private List<?> selectItems;
+
+	public ToyFromItemVisitor(List<?> selectItems) {
+		this.selectItems = selectItems;
+	}
 
 	public void visit(Table table) {
 		String tableName = table.getName();
@@ -32,10 +40,12 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		}
 
 		try {
-			Reader reader = new FileReader(dataFile.toAbsolutePath().toString());
-			Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(reader);
+			Reader reader = new BufferedReader(
+					new FileReader(dataFile.toAbsolutePath().toString()));
+			Iterable<CSVRecord> records = CSVFormat.newFormat('|').parse(reader);
 			
 			for (final CSVRecord record : records) {
+				System.out.println("record size: " + record.size());
 				for (int i = 0; i < record.size(); i++) {
 					System.out.print(record.get(i));
 					if (i < record.size() - 1) {
