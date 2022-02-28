@@ -12,8 +12,11 @@ import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.wwl.toyqe.MetaStore;
+import org.wwl.toyqe.exception.SchemaNotFoundException;
 
 import net.sf.jsqlparser.schema.Table;
+import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
 import net.sf.jsqlparser.statement.select.SubJoin;
 import net.sf.jsqlparser.statement.select.SubSelect;
@@ -27,7 +30,13 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 	}
 
 	public void visit(Table table) {
+		// TODO: refactor me
 		String tableName = table.getName();
+		List<ColumnDefinition> cols = MetaStore.getInstance().getSchemaCols(tableName);
+		if (cols == null) {
+			throw new SchemaNotFoundException(tableName);
+		}
+
 		System.out.println("table name: " + tableName);
 		Path dataFile = Paths.get("data", tableName + ".dat");
 		if (!Files.exists(dataFile)) {

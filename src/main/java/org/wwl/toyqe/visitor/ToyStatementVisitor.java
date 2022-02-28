@@ -63,7 +63,7 @@ public class ToyStatementVisitor implements StatementVisitor {
 		Table table = createTable.getTable();
 		String tableName = table.getName();
 		List<ColumnDefinition> colDefs = createTable.getColumnDefinitions();
-		MetaStore.createTable(tableName, colDefs);
+		MetaStore.getInstance().createTable(tableName, colDefs);
 
 		System.out.println("creating table " + tableName + ", schema name: " + table.getSchemaName());
 		System.out.println("column defs:");

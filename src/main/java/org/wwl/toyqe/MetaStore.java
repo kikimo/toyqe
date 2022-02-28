@@ -17,17 +17,25 @@ public class MetaStore {
 	private MetaStore() {
 		schemas = new HashMap<String, List<ColumnDefinition>>();
 	}
+	
+	public static MetaStore getInstance() {
+		return INSTANCE;
+	}
 
-	public static void createTable(String tableName, List<ColumnDefinition> colDefs) {
-		if (INSTANCE.schemas.containsKey(tableName)) {
+	public List<ColumnDefinition> getSchemaCols(String schema) {
+		return schemas.get(schema);
+	}
+
+	public void createTable(String tableName, List<ColumnDefinition> colDefs) {
+		if (schemas.containsKey(tableName)) {
 			throw new SchemaExistException(tableName);
 		};
 		
 		INSTANCE.schemas.put(tableName, colDefs);
 	}
 	
-	public static void dropTable(String tableName) {
-		if (!INSTANCE.schemas.containsKey(tableName)) {
+	public void dropTable(String tableName) {
+		if (!schemas.containsKey(tableName)) {
 			throw new SchemaNotFoundException(tableName);
 		}
 		
