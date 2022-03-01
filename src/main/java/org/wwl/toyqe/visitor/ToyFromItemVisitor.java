@@ -32,16 +32,15 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 	private void project(final CSVRecord record, Schema schema) {
 		for (int i = 0; i < selectItems.size(); i++) {
 			Object item = selectItems.get(i);
-			String colName = (String) item;
+			String colName = item.toString(); // TODO: use expression engine
 			int index = schema.getColumn(colName).getIndex();
 			String val = record.get(index);
 			System.out.print(val);
 			
 			if (i < selectItems.size() - 1) {
-				System.out.println(" | ");
+				System.out.print(" | ");
 			}
 		}
-		System.out.println();
 	}
 
 	public void visit(Table table) {
@@ -52,15 +51,17 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 			throw new SchemaNotFoundException(schemaName);
 		}
 
-		System.out.println("table name: " + schema);
-		Path dataFile = Paths.get("data", schema + ".dat");
+		System.out.println("table name: " + schemaName);
+		String dataFileName = schemaName.toLowerCase() + ".dat";
+		Path dataFile = Paths.get("data", dataFileName);
+		System.out.println("data file:" + dataFile.toString());
 		if (!Files.exists(dataFile)) {
-			System.out.println("table " + schema + " not found.");
+			System.out.println("table " + schemaName + " not found.");
 			return;
 		}
 
 		if (!Files.isRegularFile(dataFile)) {
-			System.out.println("data file of table " + schema + " is not a regular file: " + dataFile.toAbsolutePath().toString());
+			System.out.println("data file of table " + schemaName + " is not a regular file: " + dataFile.toAbsolutePath().toString());
 		}
 
 		try {
