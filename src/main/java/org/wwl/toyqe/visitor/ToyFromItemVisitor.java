@@ -14,9 +14,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.wwl.toyqe.MetaStore;
 import org.wwl.toyqe.exception.SchemaNotFoundException;
+import org.wwl.toyqe.schema.Schema;
 
 import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
 import net.sf.jsqlparser.statement.select.SubJoin;
 import net.sf.jsqlparser.statement.select.SubSelect;
@@ -29,23 +29,38 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		this.selectItems = selectItems;
 	}
 
+	private void project(final CSVRecord record, Schema schema) {
+		for (int i = 0; i < selectItems.size(); i++) {
+			Object item = selectItems.get(i);
+			String colName = (String) item;
+			int index = schema.getColumn(colName).getIndex();
+			String val = record.get(index);
+			System.out.print(val);
+			
+			if (i < selectItems.size() - 1) {
+				System.out.println(" | ");
+			}
+		}
+		System.out.println();
+	}
+
 	public void visit(Table table) {
 		// TODO: refactor me
-		String tableName = table.getName();
-		List<ColumnDefinition> cols = MetaStore.getInstance().getSchemaCols(tableName);
-		if (cols == null) {
-			throw new SchemaNotFoundException(tableName);
+		String schemaName = table.getName();
+		Schema schema = MetaStore.getInstance().getSchema(schemaName);
+		if (schema == null) {
+			throw new SchemaNotFoundException(schemaName);
 		}
 
-		System.out.println("table name: " + tableName);
-		Path dataFile = Paths.get("data", tableName + ".dat");
+		System.out.println("table name: " + schema);
+		Path dataFile = Paths.get("data", schema + ".dat");
 		if (!Files.exists(dataFile)) {
-			System.out.println("table " + tableName + " not found.");
+			System.out.println("table " + schema + " not found.");
 			return;
 		}
 
 		if (!Files.isRegularFile(dataFile)) {
-			System.out.println("data file of table " + tableName + " is not a regular file: " + dataFile.toAbsolutePath().toString());
+			System.out.println("data file of table " + schema + " is not a regular file: " + dataFile.toAbsolutePath().toString());
 		}
 
 		try {
@@ -54,13 +69,14 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 			Iterable<CSVRecord> records = CSVFormat.newFormat('|').parse(reader);
 			
 			for (final CSVRecord record : records) {
-				System.out.println("record size: " + record.size());
-				for (int i = 0; i < record.size(); i++) {
-					System.out.print(record.get(i));
-					if (i < record.size() - 1) {
-						System.out.print(", ");
-					}
-				}
+				this.project(record, schema);
+				// System.out.println("record size: " + record.size());
+				// for (int i = 0; i < record.size(); i++) {
+				// 	System.out.print(record.get(i));
+				// 	if (i < record.size() - 1) {
+				// 		System.out.print(", ");
+				// 	}
+				// }
 				System.out.println();
 			}
 		} catch (FileNotFoundException e) {
