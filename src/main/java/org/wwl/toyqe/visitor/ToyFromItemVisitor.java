@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -15,9 +16,17 @@ import org.apache.commons.csv.CSVRecord;
 import org.wwl.toyqe.MetaStore;
 import org.wwl.toyqe.exception.SchemaNotFoundException;
 import org.wwl.toyqe.schema.Schema;
+import org.wwl.toyqe.schema.ToyColumn;
 
+import net.sf.jsqlparser.eval.Eval;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.expression.PrimitiveValue;
+import net.sf.jsqlparser.expression.StringValue;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
+import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SubJoin;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
@@ -29,13 +38,33 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		this.selectItems = selectItems;
 	}
 
-	private void project(final CSVRecord record, Schema schema) {
+	private void project(final CSVRecord record, Schema schema) throws SQLException {
 		for (int i = 0; i < selectItems.size(); i++) {
-			Object item = selectItems.get(i);
-			String colName = item.toString(); // TODO: use expression engine
-			int index = schema.getColumn(colName).getIndex();
-			String val = record.get(index);
-			System.out.print(val);
+			SelectExpressionItem sexpr = (SelectExpressionItem) selectItems.get(i);
+			Expression expr = sexpr.getExpression();
+			Eval eval = new Eval() {
+				
+				@Override
+				public PrimitiveValue eval(Column col) throws SQLException {
+					String colName = col.getColumnName();
+					ToyColumn toyCol = schema.getColumn(colName);
+					record.get(toyCol.getIndex());
+					switch (toyCol.getType()) {
+					case ToyColumn.CHAR:
+					case ToyColumn.VARCHAR:
+						return new StringValue(record.get(toyCol.getIndex()));
+					case ToyColumn.DECIMAL:
+					case ToyColumn.INT:
+						return new LongValue(record.get(toyCol.getIndex()));
+					case ToyColumn.DATE:
+						throw new UnsupportedOperationException(ToyColumn.DATE);
+					default:
+						throw new UnsupportedOperationException(toyCol.getType());
+					}
+				}
+			};
+			PrimitiveValue val = eval.eval(expr);
+			System.out.print(val.toString());
 			
 			if (i < selectItems.size() - 1) {
 				System.out.print(" | ");
@@ -83,6 +112,9 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
