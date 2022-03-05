@@ -1,7 +1,6 @@
 package org.wwl.toyqe;
 
 import java.io.StringReader;
-import java.io.ObjectInputFilter.Config;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;

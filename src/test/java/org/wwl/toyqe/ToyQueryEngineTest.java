@@ -3,8 +3,6 @@ package org.wwl.toyqe;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import javax.print.attribute.standard.ColorSupported;
-
 import org.junit.Test;
 
 import net.sf.jsqlparser.parser.ParseException;

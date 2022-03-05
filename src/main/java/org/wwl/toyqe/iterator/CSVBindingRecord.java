@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.management.loading.PrivateClassLoader;
-
 import org.apache.commons.csv.CSVRecord;
 import org.wwl.toyqe.exception.DuplicateTableException;
 import org.wwl.toyqe.exception.TableNotFoundException;
-import org.wwl.toyqe.schema.ToyTable;
 import org.wwl.toyqe.schema.ToyColumn;
+import org.wwl.toyqe.schema.ToyTable;
 import org.wwl.toyqe.utils.PrimitiveValueUtils;
 
 import net.sf.jsqlparser.expression.PrimitiveValue;
