@@ -1,13 +1,13 @@
 package org.wwl.toyqe.exception;
 
-public class DuplicateSchemaException extends RuntimeException {
+public class DuplicateTableException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6194896432953822255L;
 	
-	public DuplicateSchemaException(String schemaName) {
+	public DuplicateTableException(String schemaName) {
 		super(schemaName);
 	}
 }

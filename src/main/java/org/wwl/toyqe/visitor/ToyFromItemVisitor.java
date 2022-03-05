@@ -14,8 +14,8 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.wwl.toyqe.MetaStore;
-import org.wwl.toyqe.exception.SchemaNotFoundException;
-import org.wwl.toyqe.schema.Schema;
+import org.wwl.toyqe.exception.TableNotFoundException;
+import org.wwl.toyqe.schema.ToyTable;
 import org.wwl.toyqe.schema.ToyColumn;
 
 import net.sf.jsqlparser.eval.Eval;
@@ -38,7 +38,7 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		this.selectItems = selectItems;
 	}
 
-	private void project(final CSVRecord record, Schema schema) throws SQLException {
+	private void project(final CSVRecord record, final ToyTable schema) throws SQLException {
 		for (int i = 0; i < selectItems.size(); i++) {
 			SelectExpressionItem sexpr = (SelectExpressionItem) selectItems.get(i);
 			Expression expr = sexpr.getExpression();
@@ -72,12 +72,12 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		}
 	}
 
-	public void visit(Table table) {
+	public void visit(ToyTable table) {
 		// TODO: refactor me
 		String schemaName = table.getName();
-		Schema schema = MetaStore.getInstance().getSchema(schemaName);
+		ToyTable schema = MetaStore.getInstance().getSchema(schemaName);
 		if (schema == null) {
-			throw new SchemaNotFoundException(schemaName);
+			throw new TableNotFoundException(schemaName);
 		}
 
 		System.out.println("table name: " + schemaName);
@@ -128,6 +128,12 @@ public class ToyFromItemVisitor implements FromItemVisitor {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException(subJoin.toString());
 
+	}
+
+	@Override
+	public void visit(Table arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

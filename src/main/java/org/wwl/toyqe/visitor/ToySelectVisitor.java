@@ -15,6 +15,10 @@ public class ToySelectVisitor implements SelectVisitor {
 		List<?> selectItems = plainSelect.getSelectItems();
 		FromItemVisitor fromItemVisitor = new ToyFromItemVisitor(selectItems);
 		plainSelect.getFromItem().accept(fromItemVisitor);
+
+		plainSelect.getFromItem();
+		plainSelect.getWhere();
+		plainSelect.getSelectItems();
 	}
 
 	public void visit(Union union) {
