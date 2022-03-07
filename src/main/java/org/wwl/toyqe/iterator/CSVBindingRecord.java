@@ -101,4 +101,9 @@ public class CSVBindingRecord implements BindingRecord {
 		return vals;
 	}
 
+	@Override
+	public void addColumn(String tableName, String colName, PrimitiveValue pv) {
+		throw new UnsupportedOperationException();
+	}
+
 }

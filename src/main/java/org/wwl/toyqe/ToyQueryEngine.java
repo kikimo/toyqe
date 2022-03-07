@@ -3,12 +3,14 @@ package org.wwl.toyqe;
 import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.wwl.toyqe.filter.WhereFilter;
 import org.wwl.toyqe.iterator.BindingRecord;
 import org.wwl.toyqe.iterator.CSVTableIterator;
 import org.wwl.toyqe.iterator.RAIterator;
+import org.wwl.toyqe.iterator.SimpleBindingRecord;
 import org.wwl.toyqe.schema.ToyTable;
 
 import net.sf.jsqlparser.expression.Expression;
@@ -18,11 +20,15 @@ import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
+import net.sf.jsqlparser.statement.select.AllColumns;
+import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
+import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
+import net.sf.jsqlparser.statement.select.SelectItemVisitor;
 import net.sf.jsqlparser.statement.select.Union;
 
 public class ToyQueryEngine implements QueryEngine {
@@ -102,6 +108,38 @@ public class ToyQueryEngine implements QueryEngine {
 		throw new UnsupportedOperationException(select.getClass().getName());
 	}
 
+	private class TransColumn {
+		private String table;
+		private String column;
+		private PrimitiveValue pv;
+		
+		public TransColumn(String table, String column, PrimitiveValue pv) {
+			this.table = table;
+			this.column = column;
+			this.pv = pv;
+		}
+	}
+
+	private List<TransColumn> projectExpressionItrem(BindingRecord srcBr, SimpleBindingRecord dstBr, SelectItem item) {
+		// TODO
+		return null;
+	}
+
+	private List<TransColumn> project(BindingRecord br, SelectItem item) {
+		if (item instanceof SelectExpressionItem) {
+			// TODO
+		}
+		
+		if (item instanceof AllColumns) {
+			throw new UnsupportedOperationException(item.getClass().getName());
+		}
+		
+		if (item instanceof AllTableColumns) {
+			throw new UnsupportedOperationException(item.getClass().getName());
+		}
+		
+		throw new UnsupportedOperationException(item.getClass().getName());
+	}
 
 	@Override
 	public String handlePlainSelect(PlainSelect plainSelect) throws Exception {
@@ -128,7 +166,31 @@ public class ToyQueryEngine implements QueryEngine {
 		if (condExpr != null) {
 			itr = new WhereFilter(condExpr).filter(itr);
 		}
-//		RAIterator filteredItr = new WhereFilter(condExpr).filter(itr);
+
+		// 3. project
+		List<SimpleBindingRecord> sbrList = new ArrayList<>();
+
+		SelectItem selectItem;
+		new SelectItemVisitor() {
+			
+			@Override
+			public void visit(SelectExpressionItem arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void visit(AllTableColumns arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void visit(AllColumns arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 		
 		StringBuffer sb = new StringBuffer("");
 		while (itr.hasNext()) {
