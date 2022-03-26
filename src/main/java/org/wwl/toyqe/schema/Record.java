@@ -6,6 +6,6 @@ import net.sf.jsqlparser.expression.PrimitiveValue;
 
 public interface Record {
 	TableDef getTableDef();
-	PrimitiveValue getColumn(ColumnDef col);
+	PrimitiveValue getColumn(ColDef col);
 	List<ColTuple> getColumns();
 }

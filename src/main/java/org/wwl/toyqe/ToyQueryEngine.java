@@ -31,7 +31,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 import net.sf.jsqlparser.statement.select.SelectItemVisitor;
 import net.sf.jsqlparser.statement.select.Union;
 
-public class ToyQueryEngine implements QueryEngine {
+public class ToyQueryEngine implements QueryEngineX {
 
 	private MetaStore metaStore;
 

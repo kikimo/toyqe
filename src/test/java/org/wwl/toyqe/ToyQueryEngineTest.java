@@ -15,7 +15,7 @@ public class ToyQueryEngineTest {
 
 	@Test
 	public void testCreateTable() {
-		QueryEngine queryEngine = new ToyQueryEngine();
+		QueryEngineX queryEngine = new ToyQueryEngine();
 		String createTable = "CREATE TABLE R(A int, B int, C int);";
 		try {
 			String ret = queryEngine.execute(createTable);
@@ -32,7 +32,7 @@ public class ToyQueryEngineTest {
 	@Test
 	public void testSimpleSelect() {
 		// TODO: don't use singleton meta
-		QueryEngine queryEngine = new ToyQueryEngine();
+		QueryEngineX queryEngine = new ToyQueryEngine();
 		String createTable = "CREATE TABLE R (A int, B int);";
 		String query = "SELECT A FROM R WHERE A > 4";
 		

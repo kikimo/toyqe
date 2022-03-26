@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TableDef {
 	private String tableName;
-	private HashMap<String, ColumnDef> colMap;
+	private HashMap<String, ColDef> colMap;
 	
 	public TableDef(TableDef ...tableDefs) {
 		List<String> tableNames = new ArrayList<>();
@@ -15,8 +15,8 @@ public class TableDef {
 		for (TableDef tableDef : tableDefs) {
 			tableNames.add(tableDef.getTableName());
 			
-			List<ColumnDef> cols = tableDef.getColumns();
-			for (ColumnDef col : cols) {
+			List<ColDef> cols = tableDef.getColumns();
+			for (ColDef col : cols) {
 				this.colMap.put(col.getColName(), col);
 			}
 		}
@@ -24,10 +24,10 @@ public class TableDef {
 		this.tableName = String.join("x", tableNames);
 	}
 
-	public TableDef(String tableName, List<ColumnDef> cols) {
+	public TableDef(String tableName, List<ColDef> cols) {
 		this.tableName = tableName;
 		this.colMap = new LinkedHashMap<>();
-		for (ColumnDef col : cols) {
+		for (ColDef col : cols) {
 			this.colMap.put(col.getColName(), col);
 		}
 	}
@@ -36,11 +36,11 @@ public class TableDef {
 		return this.tableName;
 	}
 
-	public List<ColumnDef> getColumns() {
+	public List<ColDef> getColumns() {
 		return new ArrayList<>(this.colMap.values());
 	}
 
-	public ColumnDef getColumn(String colName) {
+	public ColDef getColumn(String colName) {
 		if (this.colMap.containsKey(colName)) {
 			return this.colMap.get(colName);
 		}

@@ -1,6 +1,6 @@
 package org.wwl.toyqe.schema;
 
-public class ColumnDef {
+public class ColDef {
 	public String getColName() {
 		// TODO
 		return "";

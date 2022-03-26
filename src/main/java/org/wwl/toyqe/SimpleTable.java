@@ -7,7 +7,7 @@ import java.util.List;
 import org.wwl.toyqe.filter.DumbRecordFilgter;
 import org.wwl.toyqe.filter.ExpressionFilter;
 import org.wwl.toyqe.filter.RecordFilter;
-import org.wwl.toyqe.schema.ColumnDef;
+import org.wwl.toyqe.schema.ColDef;
 import org.wwl.toyqe.schema.Record;
 import org.wwl.toyqe.schema.TableDef;
 
@@ -55,7 +55,7 @@ public class SimpleTable implements Table {
 	}
 
 	@Override
-	public Table project(List<ColumnDef> cols) {
+	public Table project(List<ColDef> cols) {
 		// TODO Auto-generated method stub
 		return null;
 	}

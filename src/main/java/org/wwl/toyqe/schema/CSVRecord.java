@@ -24,13 +24,13 @@ public class CSVRecord implements Record {
 		this.record = record;
 		this.columnIndexMap = new HashMap<>();
 		for (int i = 0; i < tableDef.getColumns().size(); i++) {
-			ColumnDef col = tableDef.getColumns().get(i);
+			ColDef col = tableDef.getColumns().get(i);
 			this.columnIndexMap.put(col.getColName(), i);
 		}
 	}
 
 	@Override
-	public PrimitiveValue getColumn(ColumnDef col) {
+	public PrimitiveValue getColumn(ColDef col) {
 		int i = this.columnIndexMap.get(col.getColName());
 		if (i >= this.record.size()) {
 			throw new IllegalArgumentException();
@@ -44,7 +44,7 @@ public class CSVRecord implements Record {
 	public List<ColTuple> getColumns() {
 		List<ColTuple> ret = new ArrayList<>();
 		for (int i = 0; i < this.record.size(); i++) {
-			ColumnDef col = this.tableDef.getColumns().get(i);
+			ColDef col = this.tableDef.getColumns().get(i);
 			String vstr = this.record.get(i);
 			PrimitiveValue val = PrimitiveValueUtils.fromString(vstr, col.getColType());
 			ColTuple tuple = new ColTuple(col, val);

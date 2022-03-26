@@ -22,7 +22,7 @@ public class CompositeRecord implements Record {
 	}
 
 	@Override
-	public PrimitiveValue getColumn(ColumnDef col) {
+	public PrimitiveValue getColumn(ColDef col) {
 		PrimitiveValue val = this.leftRecord.getColumn(col);
 		if (val != null) {
 			return val;
