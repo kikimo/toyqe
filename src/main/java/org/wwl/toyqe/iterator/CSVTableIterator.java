@@ -40,7 +40,7 @@ public class CSVTableIterator implements RAIterator {
 	}
 
 	public CSVTableIterator(String dataFilePath, ToyTable table) throws java.io.IOException {
-		this(Path.of(dataFilePath), table);
+		// this(Path.of(dataFilePath), table);
 	}
 
 	@Override
