@@ -51,7 +51,7 @@ public class ExpressionValidatorTest {
 
             try {
                 Expression expr = expressionFromString(c.expr);
-                ExpressionValidator validator = new ExpressionValidator(expr);
+                ExpressionValidator validator = new ExpressionValidator(expr, null);
                 PrimitiveType pType = validator.validate();
                 if (c.throwException != null) {
                     fail("expect exception: " + c.throwException + " but found nothing.");

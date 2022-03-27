@@ -1,5 +1,7 @@
 package org.wwl.toyqe.validator;
 
+import org.toyqe.engine.ExecutionScope;
+
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.PrimitiveType;
@@ -7,8 +9,11 @@ import net.sf.jsqlparser.schema.PrimitiveType;
 public class ComparisionValidator implements Validator {
     private BinaryExpression binaryExpression;
 
-    public ComparisionValidator(Expression expression) {
+    private ExecutionScope scope;
+
+    public ComparisionValidator(Expression expression, ExecutionScope scope) {
         this.binaryExpression = (BinaryExpression) expression;
+        this.scope = scope;
     }
 
     private boolean isNumber(PrimitiveType pType) {
@@ -19,8 +24,8 @@ public class ComparisionValidator implements Validator {
     public PrimitiveType validate() throws ValidateException {
         Expression left = binaryExpression.getLeftExpression();
         Expression right = binaryExpression.getRightExpression();
-        PrimitiveType leftType = new ExpressionValidator(left).validate();
-        PrimitiveType rightType = new ExpressionValidator(right).validate();
+        PrimitiveType leftType = new ExpressionValidator(left, scope).validate();
+        PrimitiveType rightType = new ExpressionValidator(right, scope).validate();
 
         if (leftType == PrimitiveType.STRING && rightType == PrimitiveType.STRING) {
             return PrimitiveType.BOOL;

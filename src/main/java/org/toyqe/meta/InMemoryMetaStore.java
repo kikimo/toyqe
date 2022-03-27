@@ -17,6 +17,14 @@ public class InMemoryMetaStore implements MetaStore {
 
     @Override
     public void addTable(String schema, TableDef table) throws SqlException {
+        if (schema != null) {
+            schema = schema.trim().toLowerCase();
+        }
+
+        if (schema == null) {
+            schema = MetaStore.DEFAULT_SCHEMA;
+        }
+
         if (!this.schemas.containsKey(schema)) {
             throw new SqlException("schema not found: " + schema);
         }
@@ -27,6 +35,14 @@ public class InMemoryMetaStore implements MetaStore {
 
     @Override
     public TableDef getTable(String schema, String table) throws SqlException {
+        if (schema != null) {
+            schema = schema.trim().toLowerCase();
+        }
+
+        if (schema == null) {
+            schema = MetaStore.DEFAULT_SCHEMA;
+        }
+
         if (!this.schemas.containsKey(schema)) {
             throw new SqlException("schema not found: " + schema);
         }

@@ -25,7 +25,7 @@ public class ColTypeUtils {
         }
     }
 
-    public static ColDataType tColDataType(PrimitiveType primitiveType) throws SqlException {
+    public static ColDataType toColDataType(PrimitiveType primitiveType) throws SqlException {
         switch (primitiveType) {
         case DATE: {
             ColDataType colDataType = new ColDataType();
