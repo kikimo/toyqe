@@ -75,8 +75,11 @@ public class SimpleSelectItemVisitor implements SelectItemVisitor {
         Eval eval = new Eval() {
 
             @Override
-            public PrimitiveValue eval(Column arg0) throws SQLException {
-                // TODO Auto-generated method stub
+            public PrimitiveValue eval(Column column) throws SQLException {
+                System.out.println("colname: " + column.getColumnName());
+                System.out.println("table name: " + column.getTable().getName());
+                System.out.println("table alias name: " + column.getTable().getAlias());
+                System.out.println();
                 return null;
             }
 

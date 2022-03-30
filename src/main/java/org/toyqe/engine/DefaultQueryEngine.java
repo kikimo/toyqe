@@ -8,9 +8,9 @@ import java.util.List;
 import org.toyqe.meta.MetaStore;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.TableDef;
-import org.wwl.toyqe.validator.SelectColumnValidator;
-import org.wwl.toyqe.validator.ValidateException;
-import org.wwl.toyqe.validator.WhereExpressionValidator;
+import org.toyqe.validator.SelectColumnValidator;
+import org.toyqe.validator.ValidateException;
+import org.toyqe.validator.WhereExpressionValidator;
 
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParser;
@@ -86,7 +86,9 @@ public class DefaultQueryEngine implements QueryEngine {
         }
 
         Table table = (Table) item;
-        return metaStore.getTable(table.getSchemaName(), table.getName());
+        TableDef tableDef = metaStore.getTable(table.getSchemaName(), table.getName());
+
+        return tableDef;
     }
 
     public ResultSet handlePlainSelect(PlainSelect plainSelect) throws SqlException {

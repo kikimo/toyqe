@@ -1,14 +1,16 @@
 package org.toyqe.schema;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableDef {
     private String name;
-    private List<ColDef> columns;
+    private String alias;
+    private List<ColDef> colDefs;
 
-    public TableDef(String name, List<ColDef> columns) {
+    public TableDef(String name, String alias) {
         this.name = name;
-        this.columns = columns;
+        this.alias = alias;
     }
 
     public String getName() {
@@ -19,12 +21,35 @@ public class TableDef {
         this.name = name;
     }
 
-    public List<ColDef> getColumns() {
-        return columns;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setColumns(List<ColDef> columns) {
-        this.columns = columns;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
+    public List<ColDef> getColDefs() {
+        return colDefs;
+    }
+
+    public void setColDefs(List<ColDef> colDefs) {
+        for (ColDef colDef : colDefs) {
+            colDef.setTableDef(this);
+        }
+
+        this.colDefs = colDefs;
+    }
+
+    public TableDef clone() {
+        TableDef tableDef = new TableDef(name, alias);
+        List<ColDef> colDefCopies = new ArrayList<>();
+        for (ColDef colDef : colDefs) {
+            ColDef newColDef = colDef.clone();
+            colDefCopies.add(newColDef);
+        }
+        tableDef.setColDefs(colDefs);
+
+        return tableDef;
+    }
 }

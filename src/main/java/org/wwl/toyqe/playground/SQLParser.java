@@ -2,11 +2,10 @@ package org.wwl.toyqe.playground;
 
 import java.io.StringReader;
 
-import com.google.common.collect.Table;
-
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.parser.ParseException;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.StatementVisitor;
 
@@ -26,7 +25,10 @@ public class SQLParser {
 //		SELECT R.A, R.B, S.B, S.C FROM R JOIN S;
 //
 //		SELECT R.A, S.C FROM R JOIN S ON R.B = S.B;
-		String sql = "SELECT R.A, R.B, S.B, S.C FROM R JOIN S ON R.B = S.B;";
+		// String sql = "SELECT R.A, R.B, S.B, S.C FROM R JOIN S ON R.B = S.B;";
+		// String sql = "select a_s.a from s as a_s;";
+		String sql = "select c from t;";
+
 		// String sql = "SELECT A FROM R;";
 		// String sql = "SELECT * FROM R, S WHERE (R.B = S.B);";
 //
@@ -38,6 +40,8 @@ public class SQLParser {
 		
 		// tem.out.print("$> ");
 		Statement statement;
+		Column column = null;
+		Table table = null;
 		StatementVisitor statementVisitor = new SimpleStatementVisitor();
 		while ((statement = parser.Statement()) != null) {
 			statement.accept(statementVisitor);

@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.toyqe.meta.InMemoryMetaStore;
 import org.toyqe.meta.MetaStore;
 
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
+
 public class DefaultQueryEngineTest {
     private QueryEngine getTestEngine() throws SqlException {
         MetaStore metaStore = new InMemoryMetaStore();
@@ -49,6 +52,8 @@ public class DefaultQueryEngineTest {
 
     @Test
     public void testSimpleSelect() throws SqlException {
+        Column column = null;
+        Table table = column.getTable();
         QueryEngine engine = getTestEngine();
         engine.execute("CREATE TABLE R (A int, B int)");
         engine.execute("CREATE TABLE S (B int, C int)");

@@ -1,4 +1,4 @@
-package org.wwl.toyqe.validator;
+package org.toyqe.validator;
 
 import net.sf.jsqlparser.schema.PrimitiveType;
 

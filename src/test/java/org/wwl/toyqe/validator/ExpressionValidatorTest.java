@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 import java.io.StringReader;
 
 import org.junit.Test;
+import org.toyqe.validator.ExpressionValidator;
+import org.toyqe.validator.ValidateException;
 
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParser;

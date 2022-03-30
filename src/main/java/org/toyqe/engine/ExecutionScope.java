@@ -8,6 +8,8 @@ import java.util.Map;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.TableDef;
 
+import net.sf.jsqlparser.schema.Column;
+
 public class ExecutionScope {
     private Map<String, List<ColDef>> colMap;
     private Map<String, ColDef> wholeColMap;
