@@ -33,7 +33,7 @@ public class ExecutionScope {
         if (tableMap.containsKey(tableName)) {
             throw new SqlException("duplicate table: " + tableDef.getName());
         }
-        tableMap.put(tableDef.getName(), tableDef);
+        tableMap.put(tableName, tableDef);
 
         alias = normalizeStr(alias);
         if (!alias.equals("")) {
