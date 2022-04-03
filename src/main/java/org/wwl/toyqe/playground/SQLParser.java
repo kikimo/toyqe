@@ -26,8 +26,8 @@ public class SQLParser {
 //
 //		SELECT R.A, S.C FROM R JOIN S ON R.B = S.B;
 		// String sql = "SELECT R.A, R.B, S.B, S.C FROM R JOIN S ON R.B = S.B;";
-		// String sql = "select a_s.a from s as a_s;";
-		String sql = "select c from t;";
+		String sql = "select a_s.a, t from s as a_s;";
+		// String sql = "select c from t as a_;";
 
 		// String sql = "SELECT A FROM R;";
 		// String sql = "SELECT * FROM R, S WHERE (R.B = S.B);";
@@ -42,6 +42,7 @@ public class SQLParser {
 		Statement statement;
 		Column column = null;
 		Table table = null;
+		System.out.println(null + "hello world");
 		StatementVisitor statementVisitor = new SimpleStatementVisitor();
 		while ((statement = parser.Statement()) != null) {
 			statement.accept(statementVisitor);

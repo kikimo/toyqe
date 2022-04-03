@@ -3,8 +3,10 @@ package org.wwl.toyqe.playground;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.Join;
 import net.sf.jsqlparser.statement.select.PlainSelect;
@@ -18,6 +20,10 @@ public class SimpleSelectVisitor implements SelectVisitor {
 	public void visit(PlainSelect plainSelect) {
 		System.out.println("visit plain select: " + plainSelect);
 		System.out.println("from item: " + plainSelect.getFromItem());
+		Table table = (Table) plainSelect.getFromItem();
+		System.out.println("table name: " + table.getName());
+		System.err.println("table alias: " + table.getAlias());
+		// FromItem fromItem = plainSelect.getFromItem();
 		List<SelectItem> selectItems = plainSelect.getSelectItems();
 		System.out.println("select item: ");
 		for (SelectItem sItem : selectItems) {
@@ -35,7 +41,6 @@ public class SimpleSelectVisitor implements SelectVisitor {
 
 			FromItem fromItem = join.getRightItem();
 			System.out.println("join from item: " + fromItem);
-
 			List<Column> columns = join.getUsingColumns();
 			if (columns == null) {
 				columns = new ArrayList<>();

@@ -24,7 +24,8 @@ public class ColumnValidator implements Validator {
         String wholeColumnName = column.getWholeColumnName();
 
         try {
-            ColDef colDef = scope.getColumn(wholeColumnName);
+            scope.normalizeColumn(column.getTable().getName(), column.getColumnName());
+            ColDef colDef = scope.getColumn(column.getTable().getName(), column.getColumnName());
             ColDataType colDataType = colDef.getColDataType();
 
             return ColDataTypeUtils.toPrimitiveType(colDataType);
