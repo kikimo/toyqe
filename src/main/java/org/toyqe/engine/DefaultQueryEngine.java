@@ -49,10 +49,10 @@ public class DefaultQueryEngine implements QueryEngine {
             String colName = col.getColumnName();
             ColDataType colDataType = col.getColDataType();
             System.out.println("data type: " + colDataType.getDataType());
-            ColDef colDef = new ColDef(colName, colDataType, true);
+            ColDef colDef = new ColDef(colName, "", colDataType);
             colDefs.add(colDef);
         }
-        TableDef tableDef = new TableDef(tableName, colDefs);
+        TableDef tableDef = new TableDef(tableName, "", colDefs);
         this.metaStore.addTable(schemaName, tableDef);
 
         return new ResultSet("table " + tableName + " created.");

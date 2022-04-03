@@ -8,8 +8,6 @@ import java.util.Map;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.TableDef;
 
-import net.sf.jsqlparser.schema.Column;
-
 public class ExecutionScope {
     private Map<String, List<ColDef>> colMap;
     private Map<String, ColDef> wholeColMap;
@@ -40,7 +38,7 @@ public class ExecutionScope {
         }
         tableMap.put(alias, tableDef);
 
-        List<ColDef> colDefs = tableDef.getColumns();
+        List<ColDef> colDefs = tableDef.getColDefs();
         for (ColDef colDef : colDefs) {
             String colName = colDef.getName().trim().toLowerCase();
             if (!colMap.containsKey(colName)) {

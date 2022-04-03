@@ -8,4 +8,5 @@ public interface RecordIterator {
     Record next() throws SqlException;
     void reset() throws SqlException;
     RecordIterator cloneIterator() throws SqlException;
+    void close() throws SqlException;
 }

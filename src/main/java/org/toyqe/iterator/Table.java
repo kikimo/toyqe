@@ -24,8 +24,8 @@ public class Table {
         return newIt;
     }
 
-    public TableDef getTabelDef() {
-        return tableDef.clone();
+    public TableDef getTabelDef() throws SqlException {
+        return tableDef.cloneTable();
     }
 
     public Table filter(Expression expr) {

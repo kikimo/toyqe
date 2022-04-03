@@ -3,7 +3,7 @@ package org.toyqe.validator;
 import org.toyqe.engine.ExecutionScope;
 import org.toyqe.engine.SqlException;
 import org.toyqe.schema.ColDef;
-import org.toyqe.schema.ColTypeUtils;
+import org.toyqe.schema.ColDataTypeUtils;
 import org.wwl.toyqe.utils.PrimitiveValueUtils;
 
 import net.sf.jsqlparser.schema.Column;
@@ -27,7 +27,7 @@ public class ColumnValidator implements Validator {
             ColDef colDef = scope.getColumn(wholeColumnName);
             ColDataType colDataType = colDef.getColDataType();
 
-            return ColTypeUtils.toPrimitiveType(colDataType);
+            return ColDataTypeUtils.toPrimitiveType(colDataType);
         } catch (SqlException e) {
             throw new ValidateException("column not found: " + wholeColumnName, e);
         }
