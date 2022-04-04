@@ -74,6 +74,8 @@ public class DefaultQueryEngineTest {
             // new SelectTestCase("SELECT A, A FROM R", null),
             new SelectTestCase("SELECT A + 1, A + 2 FROM R", null),
 
+            new SelectTestCase("SELECT A FROM R where a > 0", null),
+
             // new SelectTestCase("SELECT * FROM R", null),
             // new SelectTestCase("SELECT R.* FROM R, S", null),  // select all table column
             // new SelectTestCase("SELECT R.A, S.C FROM R, S", null),
