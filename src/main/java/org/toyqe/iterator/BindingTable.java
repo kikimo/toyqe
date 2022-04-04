@@ -8,6 +8,8 @@ import org.toyqe.engine.SqlException;
 import org.toyqe.schema.ColDataTypeUtils;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.TableDef;
+import org.toyqe.validator.SelectColumnValidator;
+import org.toyqe.validator.ValidateException;
 
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.PrimitiveType;
@@ -51,8 +53,13 @@ public class BindingTable {
         for (SelectItem item : selectItems) {
             if (item instanceof SelectExpressionItem) {
                 SelectExpressionItem selectExpressionItem = (SelectExpressionItem) item;
-                int hCode = selectExpressionItem.hashCode();
-                PrimitiveType pType = scope.getSelectItemType(hCode);
+                SelectColumnValidator validator = new SelectColumnValidator(item, scope);
+                PrimitiveType pType;
+                try {
+                    pType = validator.validate();
+                } catch (ValidateException e) {
+                    throw new SqlException(e);
+                }
                 ColDataType colDataType = ColDataTypeUtils.toColDataType(pType);
                 String name = selectExpressionItem.getAlias();
                 if (name == null) {
@@ -66,7 +73,8 @@ public class BindingTable {
         }
 
         TableDef bindingTableDef = new TableDef("", "", colDefs);
-        BindingTable table = new BindingTable(bindingTableDef, it, scope);
+        RecordIterator projectIt = new ProjectIterator(it.cloneIterator(), selectItems, scope);
+        BindingTable table = new BindingTable(bindingTableDef, projectIt, scope);
         return table;
     }
 

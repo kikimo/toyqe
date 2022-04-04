@@ -22,10 +22,6 @@ public class Record {
 
     public List<PrimitiveValue> getColVals() {
         List<PrimitiveValue> colVals = new ArrayList<>(vMap.values());
-        // TODO: delete me
-        for (String key : vMap.keySet()) {
-            System.out.println("key: " + key);
-        }
 
         return colVals;
     }

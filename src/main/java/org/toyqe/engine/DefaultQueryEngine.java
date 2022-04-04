@@ -141,6 +141,7 @@ public class DefaultQueryEngine implements QueryEngine {
             workingTable = workingTable.filter(whereExpression);
         }
 
+        System.out.printf("select size: %d\n", plainSelect.getSelectItems().size());
         workingTable = workingTable.project(plainSelect.getSelectItems());
         RecordIterator it = workingTable.newIterator();
         List<Record> records = new ArrayList<>();
