@@ -4,7 +4,6 @@ import org.toyqe.engine.ExecutionScope;
 import org.toyqe.engine.SqlException;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.ColDataTypeUtils;
-import org.wwl.toyqe.utils.PrimitiveValueUtils;
 
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.PrimitiveType;

@@ -4,9 +4,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.toyqe.iterator.BindingTable;
+import org.toyqe.iterator.CSVIterator;
+import org.toyqe.iterator.RecordIterator;
 import org.toyqe.meta.MetaStore;
 import org.toyqe.schema.ColDef;
+import org.toyqe.schema.Record;
 import org.toyqe.schema.TableDef;
 import org.toyqe.validator.SelectColumnValidator;
 import org.toyqe.validator.ValidateException;
@@ -58,7 +61,7 @@ public class DefaultQueryEngine implements QueryEngine {
         return new ResultSet("table " + tableName + " created.");
     }
 
-    private ResultSet doExecute(Statement statement) throws SqlException {
+    private ResultSet doExecute(Statement statement) throws SqlException, ValidateException {
         if (statement instanceof CreateTable) {
             return handleCreateTable((CreateTable) statement);
         }
@@ -70,7 +73,7 @@ public class DefaultQueryEngine implements QueryEngine {
         throw new SqlException("unsupported statement: " + statement.getClass());
     }
 
-    public ResultSet handleSelect(Select select) throws SqlException {
+    public ResultSet handleSelect(Select select) throws SqlException, ValidateException {
         // TODO handle with item
         SelectBody selectBody = select.getSelectBody();
         if (selectBody instanceof PlainSelect) {
@@ -91,7 +94,17 @@ public class DefaultQueryEngine implements QueryEngine {
         return tableDef;
     }
 
-    public ResultSet handlePlainSelect(PlainSelect plainSelect) throws SqlException {
+    private BindingTable bindingTableFromItem(FromItem item, ExecutionScope scope) throws SqlException {
+        TableDef tableDef = tableFromItem(item);
+        String tableName = tableDef.getName().toLowerCase();
+        String csvFilePath = "data/datasets/Sanity_Check_Examples/data/" + tableName + ".dat";
+        CSVIterator it = new CSVIterator(tableDef, csvFilePath);
+        BindingTable table = new BindingTable(tableDef, it, scope);
+
+        return table;
+    }
+
+    public ResultSet handlePlainSelect(PlainSelect plainSelect) throws SqlException, ValidateException {
         ExecutionScope scope = new ExecutionScope();
         FromItem fromItem = plainSelect.getFromItem();
         TableDef tableDef = tableFromItem(fromItem);
@@ -109,9 +122,9 @@ public class DefaultQueryEngine implements QueryEngine {
         }
 
         List<SelectItem> selectItems = plainSelect.getSelectItems();
-        SelectColumnValidator selectColumnValidator = new SelectColumnValidator(scope);
         for (SelectItem item : selectItems) {
-            selectColumnValidator.validate(item);
+            SelectColumnValidator selectColumnValidator = new SelectColumnValidator(item, scope);
+            selectColumnValidator.validate();
         }
 
         Expression whereExpression = plainSelect.getWhere();
@@ -122,7 +135,23 @@ public class DefaultQueryEngine implements QueryEngine {
             throw new SqlException(e);
         }
 
-        return null;
+        // logic plan
+        BindingTable workingTable = bindingTableFromItem(fromItem, scope);
+        if (whereExpression != null) {
+            workingTable = workingTable.filter(whereExpression);
+        }
+
+        workingTable = workingTable.project(plainSelect.getSelectItems());
+        RecordIterator it = workingTable.newIterator();
+        List<Record> records = new ArrayList<>();
+        while (it.hasNext()) {
+            Record r = it.next();
+            records.add(r);
+        }
+        it.close();
+        ResultSet rs = new ResultSet(records, "");
+
+        return rs;
     }
 
     @Override
@@ -140,6 +169,8 @@ public class DefaultQueryEngine implements QueryEngine {
             return resultSet;
         } catch (ParseException e) {
             throw new SqlException("error executing:" + statement.toString(), e);
+        } catch (ValidateException e) {
+            throw new SqlException(e);
         }
     }
 }

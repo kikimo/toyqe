@@ -8,15 +8,32 @@ import java.util.Map;
 import org.toyqe.schema.ColDef;
 import org.toyqe.schema.TableDef;
 
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.PrimitiveType;
+
 public class ExecutionScope {
     private Map<String, TableDef> tableMap;
     private Map<String, List<ColDef>> colMap;
     private Map<String, ColDef> normalizedColMap;
+    private Map<Integer, PrimitiveType> selectItemTypes;
 
     public ExecutionScope() {
         this.tableMap = new HashMap<>();
         this.colMap = new HashMap<>();
         this.normalizedColMap = new HashMap<>();
+        this.selectItemTypes = new HashMap<>();
+    }
+
+    public void updateSelectItemType(int itemHashCode, PrimitiveType pType) {
+        selectItemTypes.put(itemHashCode, pType);
+    }
+
+    public PrimitiveType getSelectItemType(int itemHashCode) throws SqlException {
+        if (!selectItemTypes.containsKey(itemHashCode)) {
+            throw new SqlException("item not found");
+        }
+
+        return selectItemTypes.get(itemHashCode);
     }
 
     public void addTable(TableDef tableDef) throws SqlException {
@@ -67,6 +84,14 @@ public class ExecutionScope {
 
         val = val.trim().toLowerCase();
         return val;
+    }
+
+    public ColDef getColumn(Column column) throws SqlException {
+        if (column.getTable() == null) {
+            return getColumn(column.getColumnName());
+        }
+
+        return getColumn(column.getTable().getName(), column.getColumnName());
     }
 
     public ColDef getColumn(String colName) throws SqlException {

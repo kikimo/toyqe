@@ -3,40 +3,30 @@ package org.toyqe.engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wwl.toyqe.schema.ColDef;
+import org.toyqe.schema.Record;
 
 import net.sf.jsqlparser.expression.PrimitiveValue;
 
 public class ResultSet {
-    private List<List<PrimitiveValue>> rows;
-
-    private List<ColDef> columns;
+    private List<Record> rows;
 
     private String summary;
 
     public ResultSet(String summary) {
-        this(null, null);
         this.summary = summary;
     }
 
-    public ResultSet(List<List<PrimitiveValue>> rows, List<ColDef> columns) {
+    public ResultSet(List<Record> rows, String summary) {
         if (rows == null) {
             rows = new ArrayList<>();
         }
         this.rows = rows;
 
-        if (columns == null) {
-            columns = new ArrayList<>();
-        }
-        this.columns = columns;
+        this.summary = summary;
     }
 
-    List<List<PrimitiveValue>> getRows() {
+    List<Record> getRows() {
         return rows;
-    }
-
-    List<ColDef> getColumns() {
-        return columns;
     }
 
     public String getSummary() {

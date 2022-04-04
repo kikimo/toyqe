@@ -59,7 +59,7 @@ public class DefaultQueryEngineTest {
             // new SelectTestCase("SELECT * FROM R", null),
             // new SelectTestCase("SELECT R.* FROM R, S", null),  // select all table column
             new SelectTestCase("SELECT R.A, S.C FROM R, S", null),
-            new SelectTestCase("SELECT R.A, a_r.b as k, S.C FROM R as a_r, S", null),
+            // new SelectTestCase("SELECT R.A, a_r.b as k, S.C FROM R as a_r, S", null),
             // new SelectTestCase("SELECT R.A, S.D FROM R, S", new SqlException()),
             // new SelectTestCase("SELECT R.A, S.C FROM R, S, T", new SqlException()),
         };
