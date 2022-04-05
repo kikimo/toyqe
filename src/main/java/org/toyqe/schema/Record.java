@@ -1,6 +1,7 @@
 package org.toyqe.schema;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,7 +39,8 @@ public class Record {
         return this;
     }
 
-    public Record clone() {
-        throw new UnsupportedOperationException();
+    public Record cloneRecord() throws SqlException {
+        Map<String, PrimitiveValue> vCopy = new LinkedHashMap<>(vMap);
+        return new Record(vCopy);
     }
 }

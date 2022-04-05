@@ -78,7 +78,23 @@ public class BindingTable {
         return table;
     }
 
-    public BindingTable join(BindingTable right, Expression onExpr) {
-        throw new UnsupportedOperationException();
+    public BindingTable join(BindingTable right, Expression onExpr) throws SqlException {
+        List<ColDef> jColDefs = new ArrayList<>();
+        for (ColDef colDef : tableDef.getColDefs()) {
+            jColDefs.add(colDef.clone());
+        }
+
+        for (ColDef colDef : right.getTabelDef().getColDefs()) {
+            jColDefs.add(colDef.clone());
+        }
+
+        TableDef jTableDef = new TableDef(null, null, jColDefs);
+        RecordIterator jIt = new JoinIterator(this.newIterator(), right.newIterator());
+        BindingTable jTable = new BindingTable(jTableDef, jIt, scope);
+        if (onExpr != null) {
+            jTable = jTable.filter(onExpr);
+        }
+
+        return jTable;
     }
 }

@@ -27,7 +27,7 @@ public class ComparisionValidator implements Validator {
         PrimitiveType leftType = new ExpressionValidator(left, scope).validate();
         PrimitiveType rightType = new ExpressionValidator(right, scope).validate();
 
-        if (leftType == PrimitiveType.STRING && rightType == PrimitiveType.STRING) {
+        if (leftType == rightType) {
             return PrimitiveType.BOOL;
         }
 

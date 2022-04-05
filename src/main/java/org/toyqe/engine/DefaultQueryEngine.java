@@ -18,6 +18,7 @@ import org.toyqe.validator.WhereExpressionValidator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.parser.ParseException;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColDataType;
@@ -137,6 +138,21 @@ public class DefaultQueryEngine implements QueryEngine {
 
         // logic plan
         BindingTable workingTable = bindingTableFromItem(fromItem, scope);
+
+        // join table if any
+        List<Join> joins = plainSelect.getJoins(); 
+        if (joins == null) {
+            joins = new ArrayList<>();
+        }
+
+        for (Join join : joins) {
+            FromItem item = join.getRightItem();
+            Expression onExpr =  join.getOnExpression();
+            // List<Column> usingColumns = join.getUsingColumns();  // what for?
+            BindingTable rTable = bindingTableFromItem(item, scope);
+            workingTable = workingTable.join(rTable, onExpr);
+        }
+
         if (whereExpression != null) {
             workingTable = workingTable.filter(whereExpression);
         }

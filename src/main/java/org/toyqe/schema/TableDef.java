@@ -12,8 +12,14 @@ public class TableDef {
     private String alias;
     private List<ColDef> colDefs;
 
+    // TODO: handle alias and duplicate column
     private void verifyCols(List<ColDef> colDefs) throws SqlException {
+        if (this.name == null) {
+            return;
+        }
+
         Set<String> keys = new HashSet<>();
+        // TODO handle alias
         for (ColDef col : colDefs) {
             if (keys.contains(col.getName())) {
                 throw new SqlException("duplicate column key: " + col.getName());
@@ -29,8 +35,10 @@ public class TableDef {
         this.colDefs = colDefs;
 
         verifyCols(colDefs);
-        for (ColDef colDef : colDefs) {
-            colDef.setTableDef(this);
+        if (this.name != null) {
+            for (ColDef colDef : colDefs) {
+                colDef.setTableDef(this);
+            }
         }
     }
 

@@ -17,6 +17,7 @@ import net.sf.jsqlparser.expression.operators.arithmetic.Multiplication;
 import net.sf.jsqlparser.expression.operators.arithmetic.Subtraction;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.MinorThan;
@@ -78,6 +79,8 @@ public class ExpressionValidator implements Validator {
             validator = new UnaryLogicExpression(((InverseExpression) e).getExpression(), scope);
         } else if (e instanceof Column) {
             validator = new ColumnValidator((Column) e, scope);
+        } else if (e instanceof EqualsTo) {
+            validator = new ComparisionValidator(e, scope);
         }
 
         if (validator != null) {
